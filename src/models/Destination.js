@@ -15,6 +15,20 @@ const destinationSchema = new Schema(
       type: String,
       required: [true, "Location is required"],
     },
+    coordinates: {
+      latitude: {
+        type: Number,
+        required: [true, "Latitude is required"],
+        min: -90,
+        max: 90,
+      },
+      longitude: {
+        type: Number,
+        required: [true, "Longitude is required"],
+        min: -180,
+        max: 180,
+      },
+    },
     pricePerPerson: {
       type: Number,
       required: [true, "Price per person is required"],
