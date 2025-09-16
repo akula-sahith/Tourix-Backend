@@ -1,9 +1,8 @@
 const guideSchema = new mongoose.Schema(
   {
     vendorId: { type: mongoose.Schema.Types.ObjectId, ref: "Vendor", required: true },
-    languages: [String], // e.g., ["English", "Hindi", "Santhali"]
-    experienceYears: { type: Number, default: 0 },
-    chargePerDay: { type: Number, required: true },
+    costPerDay: { type: Number, required: true },
+    availability: { type: Boolean, default: true },
   },
   { timestamps: true }
 );
