@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const serviceSchema = new Schema(
+const vendorSchema = new Schema(
   {
     name: {
       type: String,
@@ -60,4 +60,4 @@ const serviceSchema = new Schema(
   { timestamps: true }
 );
 
-export default model("Service", serviceSchema);
+export default model("Vendor", vendorSchema);
