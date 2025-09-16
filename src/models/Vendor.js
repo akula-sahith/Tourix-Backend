@@ -22,11 +22,6 @@ const vendorSchema = new mongoose.Schema(
       enum: ["homestay", "guide", "transport", "handicraft"],
       required: true,
     },
-    destination: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Destination", // link to the destination where they operate
-      required: true,
-    },
     verified: {
       type: Boolean,
       default: false, // only admin can set true

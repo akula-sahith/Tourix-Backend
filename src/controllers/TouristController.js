@@ -1,117 +1,88 @@
-// controllers/destinationController.js
-
-const Destination = require("../models/Destination").default;
 const Tourist = require("../models/Tourist").default;
+const bcrypt = require("bcryptjs");
 
-// Create new destination
-exports.createDestination = async (req, res) => {
+// Register new tourist
+exports.registerTourist = async (req, res) => {
   try {
-    const {
-      title,
-      description,
-      location,
-      coordinates,
-      pricePerPerson,
-      duration,
-      category,
-      images,
-    } = req.body;
+    const { name, email, password, phone, nationality, age } = req.body;
 
-    const newDestination = new Destination({
-      title,
-      description,
-      location,
-      coordinates,
-      pricePerPerson,
-      duration,
-      category,
-      images,
+    const existingTourist = await Tourist.findOne({ email });
+    if (existingTourist) {
+      return res.status(400).json({ message: "Email already registered" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newTourist = new Tourist({
+      name,
+      email,
+      password: hashedPassword,
+      phone,
+      nationality,
+      age,
     });
 
-    await newDestination.save();
-    res.status(201).json({ message: "Destination created successfully", destination: newDestination });
+    await newTourist.save();
+    res.status(201).json({ message: "Tourist registered successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// Get all destinations
-exports.getAllDestinations = async (req, res) => {
+// Login tourist
+exports.loginTourist = async (req, res) => {
   try {
-    const destinations = await Destination.find().populate("reviews.tourist", "name email");
-    res.json(destinations);
+    const { email, password } = req.body;
+
+    const tourist = await Tourist.findOne({ email });
+    if (!tourist) return res.status(400).json({ message: "Invalid email or password" });
+
+    const isMatch = await bcrypt.compare(password, tourist.password);
+    if (!isMatch) return res.status(400).json({ message: "Invalid email or password" });
+
+    res.json({
+      message: "Login successful",
+      tourist: {
+        id: tourist._id,
+        name: tourist.name,
+        email: tourist.email,
+        phone: tourist.phone,
+        nationality: tourist.nationality,
+        age: tourist.age,
+      },
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// Get destination by ID
-exports.getDestinationById = async (req, res) => {
+// Get all tourists
+exports.getAllTourists = async (req, res) => {
+  try {
+    const tourists = await Tourist.find();
+    res.json(tourists);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Get tourist details by ID
+exports.getTouristById = async (req, res) => {
   try {
     const { id } = req.params;
-    const destination = await Destination.findById(id).populate("reviews.tourist", "name email");
-    if (!destination) return res.status(404).json({ message: "Destination not found" });
 
-    res.json(destination);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// Update destination
-exports.updateDestination = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const updatedDestination = await Destination.findByIdAndUpdate(id, req.body, { new: true });
-    if (!updatedDestination) return res.status(404).json({ message: "Destination not found" });
-
-    res.json({ message: "Destination updated successfully", destination: updatedDestination });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// Delete destination
-exports.deleteDestination = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const deletedDestination = await Destination.findByIdAndDelete(id);
-    if (!deletedDestination) return res.status(404).json({ message: "Destination not found" });
-
-    res.json({ message: "Destination deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// Add review to destination
-exports.addReview = async (req, res) => {
-  try {
-    const { id } = req.params; // destination id
-    const { touristId, comment, rating } = req.body;
-
-    const tourist = await Tourist.findById(touristId);
+    const tourist = await Tourist.findById(id).populate("bookings");
     if (!tourist) return res.status(404).json({ message: "Tourist not found" });
 
-    const destination = await Destination.findById(id);
-    if (!destination) return res.status(404).json({ message: "Destination not found" });
-
-    const review = {
-      tourist: tourist._id,
-      comment,
-      rating,
-    };
-
-    destination.reviews.push(review);
-
-    // Update average rating
-    const totalRating = destination.reviews.reduce((acc, r) => acc + r.rating, 0);
-    destination.rating = totalRating / destination.reviews.length;
-
-    await destination.save();
-
-    res.json({ message: "Review added successfully", destination });
+    res.json({
+      id: tourist._id,
+      name: tourist.name,
+      email: tourist.email,
+      phone: tourist.phone,
+      nationality: tourist.nationality,
+      age: tourist.age,
+      bookings: tourist.bookings,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

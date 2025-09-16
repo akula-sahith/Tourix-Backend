@@ -1,88 +1,49 @@
-const Tourist = require("../models/Tourist").default;
-const bcrypt = require("bcryptjs");
+// controllers/vendorController.js
+const Vendor = require("../models/Vendor").default;
 
-// Register new tourist
-exports.registerTourist = async (req, res) => {
+// Register new vendor
+exports.registerVendor = async (req, res) => {
   try {
-    const { name, email, password, phone, nationality, age } = req.body;
+    const { name, email, phone, type, destination } = req.body;
 
-    const existingTourist = await Tourist.findOne({ email });
-    if (existingTourist) {
+    const existingVendor = await Vendor.findOne({ email });
+    if (existingVendor) {
       return res.status(400).json({ message: "Email already registered" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newTourist = new Tourist({
+    const newVendor = new Vendor({
       name,
       email,
-      password: hashedPassword,
       phone,
-      nationality,
-      age,
+      type,
+      destination,
     });
 
-    await newTourist.save();
-    res.status(201).json({ message: "Tourist registered successfully" });
+    await newVendor.save();
+    res.status(201).json({ message: "Vendor registered successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// Login tourist
-exports.loginTourist = async (req, res) => {
+// Get all vendors
+exports.getAllVendors = async (req, res) => {
   try {
-    const { email, password } = req.body;
-
-    const tourist = await Tourist.findOne({ email });
-    if (!tourist) return res.status(400).json({ message: "Invalid email or password" });
-
-    const isMatch = await bcrypt.compare(password, tourist.password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid email or password" });
-
-    res.json({
-      message: "Login successful",
-      tourist: {
-        id: tourist._id,
-        name: tourist.name,
-        email: tourist.email,
-        phone: tourist.phone,
-        nationality: tourist.nationality,
-        age: tourist.age,
-      },
-    });
+    const vendors = await Vendor.find().populate("destination", "title location");
+    res.json(vendors);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// Get all tourists
-exports.getAllTourists = async (req, res) => {
-  try {
-    const tourists = await Tourist.find();
-    res.json(tourists);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// Get tourist details by ID
-exports.getTouristById = async (req, res) => {
+// Get vendor details by ID
+exports.getVendorById = async (req, res) => {
   try {
     const { id } = req.params;
+    const vendor = await Vendor.findById(id).populate("destination", "title location");
+    if (!vendor) return res.status(404).json({ message: "Vendor not found" });
 
-    const tourist = await Tourist.findById(id).populate("bookings");
-    if (!tourist) return res.status(404).json({ message: "Tourist not found" });
-
-    res.json({
-      id: tourist._id,
-      name: tourist.name,
-      email: tourist.email,
-      phone: tourist.phone,
-      nationality: tourist.nationality,
-      age: tourist.age,
-      bookings: tourist.bookings,
-    });
+    res.json(vendor);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
