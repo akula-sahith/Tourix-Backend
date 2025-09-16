@@ -1,9 +1,11 @@
 const homestaySchema = new mongoose.Schema(
   {
     vendorId: { type: mongoose.Schema.Types.ObjectId, ref: "Vendor", required: true },
-    roomsAvailable: { type: Number, required: true },
+    stayName: { type: String, required: true },
+    rooms: { type: Number, required: true },
+    availability: { type: Boolean, default: true },
     pricePerNight: { type: Number, required: true },
-    amenities: [String], // e.g., ["wifi", "parking", "meals"]
+    images: [String], // upload image URLs
   },
   { timestamps: true }
 );
