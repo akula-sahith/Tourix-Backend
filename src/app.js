@@ -2,7 +2,8 @@
 const express = require("express");
 const connectDB = require("./config/db");
 const apiRoutes = require("./routes/apiRoutes");
-const aiRoutes = require("./routes/aiRoutes")
+const aiRoutes = require("./routes/aiRoutes");
+const touristRoutes = require("./routes/TouristRoute");
 const app = express();
 
 // Connect to MongoDB
@@ -14,6 +15,8 @@ app.use(express.json());
 
 app.use("/api", apiRoutes);
 app.use("/ai",aiRoutes);
+app.use("/tourist",touristRoutes);
+
 
 // Hello World route
 app.get("/", (req, res) => {
