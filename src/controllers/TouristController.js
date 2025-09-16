@@ -1,21 +1,18 @@
-import Tourist from "../models/Tourist.js";
-import bcrypt from "bcryptjs";
+const Tourist = require("../models/Tourist");
+const bcrypt = require("bcryptjs");
 
 // Register new tourist
-export const registerTourist = async (req, res) => {
+exports.registerTourist = async (req, res) => {
   try {
     const { name, email, password, phone, nationality, age } = req.body;
 
-    // Check if email exists
     const existingTourist = await Tourist.findOne({ email });
     if (existingTourist) {
       return res.status(400).json({ message: "Email already registered" });
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create tourist
     const newTourist = new Tourist({
       name,
       email,
@@ -32,8 +29,8 @@ export const registerTourist = async (req, res) => {
   }
 };
 
-// Login tourist (no token)
-export const loginTourist = async (req, res) => {
+// Login tourist
+exports.loginTourist = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -60,7 +57,7 @@ export const loginTourist = async (req, res) => {
 };
 
 // Get all tourists
-export const getAllTourists = async (req, res) => {
+exports.getAllTourists = async (req, res) => {
   try {
     const tourists = await Tourist.find();
     res.json(tourists);
@@ -69,15 +66,14 @@ export const getAllTourists = async (req, res) => {
   }
 };
 
-// Get tourist details by ID (for profile)
-export const getTouristById = async (req, res) => {
+// Get tourist details by ID
+exports.getTouristById = async (req, res) => {
   try {
     const { id } = req.params;
 
     const tourist = await Tourist.findById(id).populate("bookings");
     if (!tourist) return res.status(404).json({ message: "Tourist not found" });
 
-    // Return profile-ready data
     res.json({
       id: tourist._id,
       name: tourist.name,
