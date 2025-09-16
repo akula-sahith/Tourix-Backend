@@ -1,10 +1,10 @@
-import express from "express";
-import {
+const express = require("express");
+const {
   registerTourist,
   loginTourist,
   getAllTourists,
   getTouristById,
-} from "../controllers/TouristController.js";
+} = require("../controllers/TouristController");
 
 const router = express.Router();
 
@@ -16,4 +16,4 @@ router.post("/login", loginTourist);       // Login tourist
 router.get("/", getAllTourists);           // Get all tourists
 router.get("/:id", getTouristById);        // Get tourist profile by ID
 
-export default router;
+module.exports = router; // ✅ CommonJS export
