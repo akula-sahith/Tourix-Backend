@@ -1,4 +1,4 @@
-const Tourist = require("../models/Tourist");
+const Tourist = require("../models/Tourist").default;
 const bcrypt = require("bcryptjs");
 
 // Register new tourist
