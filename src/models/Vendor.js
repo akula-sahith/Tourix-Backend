@@ -1,63 +1,38 @@
-import { Schema, model } from "mongoose";
+import mongoose from "mongoose";
 
-const vendorSchema = new Schema(
+const vendorSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "Vendor name is required"],
+      required: true,
       trim: true,
     },
     email: {
       type: String,
-      required: [true, "Email is required"],
+      required: true,
       unique: true,
       lowercase: true,
     },
     phone: {
       type: String,
-      required: [true, "Phone number is required"],
-    },
-    password: {
-      type: String,
-      required: [true, "Password is required"],
-      minlength: 6,
-    },
-    serviceType: {
-      type: String,
-      required: [true, "Service type is required"], // e.g., "Guide", "Transport", "Food", "Souvenir Shop"
-    },
-    location: {
-      type: String,
-      required: [true, "Location is required"],
-    },
-    description: {
-      type: String,
-    },
-    destination: {
-      type: Schema.Types.ObjectId,
-      ref: "Destination", // ✅ linked to a particular destination
       required: true,
     },
-    ratings: {
-      type: Number,
-      default: 0,
-      min: 0,
-      max: 5,
+    type: {
+      type: String,
+      enum: ["homestay", "guide", "transport", "handicraft"],
+      required: true,
     },
-    reviews: [
-      {
-        tourist: { type: Schema.Types.ObjectId, ref: "Tourist" },
-        comment: String,
-        rating: { type: Number, min: 0, max: 5 },
-        createdAt: { type: Date, default: Date.now },
-      },
-    ],
+    destination: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Destination", // link to the destination where they operate
+      required: true,
+    },
     verified: {
       type: Boolean,
-      default: false, // admin can verify vendor
+      default: false, // only admin can set true
     },
   },
   { timestamps: true }
 );
 
-export default model("Vendor", vendorSchema);
+export default mongoose.model("Vendor", vendorSchema);
