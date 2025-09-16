@@ -1,10 +1,10 @@
 // controllers/destinationController.js
 
-import Destination from "../models/Destination.js";
-import Tourist from "../models/Tourist.js";
+const Destination = require("../models/Destination").default;
+const Tourist = require("../models/Tourist").default;
 
 // Create new destination
-export const createDestination = async (req, res) => {
+exports.createDestination = async (req, res) => {
   try {
     const {
       title,
@@ -36,7 +36,7 @@ export const createDestination = async (req, res) => {
 };
 
 // Get all destinations
-export const getAllDestinations = async (req, res) => {
+exports.getAllDestinations = async (req, res) => {
   try {
     const destinations = await Destination.find().populate("reviews.tourist", "name email");
     res.json(destinations);
@@ -46,7 +46,7 @@ export const getAllDestinations = async (req, res) => {
 };
 
 // Get destination by ID
-export const getDestinationById = async (req, res) => {
+exports.getDestinationById = async (req, res) => {
   try {
     const { id } = req.params;
     const destination = await Destination.findById(id).populate("reviews.tourist", "name email");
@@ -59,7 +59,7 @@ export const getDestinationById = async (req, res) => {
 };
 
 // Update destination
-export const updateDestination = async (req, res) => {
+exports.updateDestination = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -73,7 +73,7 @@ export const updateDestination = async (req, res) => {
 };
 
 // Delete destination
-export const deleteDestination = async (req, res) => {
+exports.deleteDestination = async (req, res) => {
   try {
     const { id } = req.params;
     const deletedDestination = await Destination.findByIdAndDelete(id);
@@ -86,7 +86,7 @@ export const deleteDestination = async (req, res) => {
 };
 
 // Add review to destination
-export const addReview = async (req, res) => {
+exports.addReview = async (req, res) => {
   try {
     const { id } = req.params; // destination id
     const { touristId, comment, rating } = req.body;
