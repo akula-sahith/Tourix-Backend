@@ -1,13 +1,14 @@
+
 const bookingSchema = new mongoose.Schema(
   {
-    tourist: {
+    tourist:  [ {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Tourist",
       required: true,
-    },
+    }, ],
     Destination: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Destination", // ✅ changed from Tour → Listing
+      ref: "Destination", 
       required: true,
     },
     bookingDate: {
