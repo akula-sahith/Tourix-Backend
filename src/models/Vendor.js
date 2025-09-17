@@ -1,35 +1,20 @@
-import mongoose from "mongoose";
-
 const vendorSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      lowercase: true,
-    },
-    phone: {
-      type: String,
-      required: true,
-    },
-    type: {
-      type: String,
+    name: { type: String, required: true, trim: true },
+    email: { type: String, required: true, unique: true, lowercase: true },
+    phone: { type: String, required: true },
+    types: {
+      type: [String], // approved services
       enum: ["homestay", "guide", "transport", "handicraft"],
-      required: true,
+      default: [],
     },
-    verified: {
-      type: Boolean,
-      default: false, // only admin can set true
+    pendingServices: {
+      type: [String], // services waiting for admin approval
+      enum: ["homestay", "guide", "transport", "handicraft"],
+      default: [],
     },
-    image: {
-      type: String, // URL or path to vendor’s image/logo
-      default: "https://via.placeholder.com/150", // fallback placeholder
-    },
+    verified: { type: Boolean, default: false },
+    image: { type: String }, // profile photo/logo
   },
   { timestamps: true }
 );

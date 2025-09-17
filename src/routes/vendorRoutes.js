@@ -1,21 +1,21 @@
-// routes/vendorRoutes.js
-const express = require("express");
-const {
+import express from "express";
+import {
   registerVendor,
-  loginVendor,
   getAllVendors,
   getVendorById,
-  verifyVendor,
-} = require("../controllers/vendorController");
+  getVendorProfile,
+  updateVendorProfile,
+  requestService,
+} from "../controllers/vendorController.js";
 
 const router = express.Router();
 
-// Public routes
-router.post("/register", registerVendor);  // Register vendor      // Login vendor
+// Vendor routes
+router.post("/register", registerVendor);
+router.get("/", getAllVendors);
+router.get("/:id", getVendorById);
+router.get("/profile/:id", getVendorProfile);
+router.patch("/:id", updateVendorProfile);
+router.post("/request-service/:id", requestService);
 
-// Protected/Admin routes (you can later add auth middleware here)
-router.get("/getAll", getAllVendors);            // Get all vendors
-router.get("/:id", getVendorById);         // Get vendor by ID
-
-
-module.exports = router;
+export default router;
