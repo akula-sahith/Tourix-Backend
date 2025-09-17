@@ -1,6 +1,7 @@
 // src/app.js
 const express = require("express");
 const connectDB = require("./config/db");
+const cors = require("cors");
 const apiRoutes = require("./routes/apiRoutes");
 const aiRoutes = require("./routes/aiRoutes");
 const vendorRoutes = require("./routes/vendorRoutes");
@@ -13,7 +14,7 @@ connectDB();
 
 // Middleware
 app.use(express.json());
-
+app.use(cors());
 
 app.use("/api", apiRoutes);
 app.use("/ai",aiRoutes);
