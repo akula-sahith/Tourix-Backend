@@ -5,6 +5,7 @@ const vendorSchema = new Schema(
     email: { type: String, required: true, unique: true, lowercase: true },
     phone: { type: String, required: true },
     destination : { type: String, required: true },
+    uid: { type: String, required: true, unique: true },
     types: {
       type: [String], // approved services
       enum: ["homestay", "guide", "transport", "handicraft"],
