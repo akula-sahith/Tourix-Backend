@@ -34,6 +34,12 @@ const touristSchema = new Schema(
         ref: "Booking", // will link to Booking model
       },
     ],
+    guides: [
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Guide"
+  }
+]
   },
   { timestamps: true }
 );

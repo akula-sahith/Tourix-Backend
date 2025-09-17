@@ -26,6 +26,10 @@ const vendorSchema = new mongoose.Schema(
       type: Boolean,
       default: false, // only admin can set true
     },
+    image: {
+      type: String, // URL or path to vendor’s image/logo
+      default: "https://via.placeholder.com/150", // fallback placeholder
+    },
   },
   { timestamps: true }
 );
