@@ -36,7 +36,7 @@ const touristSchema = new Schema(
     ],
     guides: [
   {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "Guide"
   }
 ]

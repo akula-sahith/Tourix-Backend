@@ -1,8 +1,10 @@
-const vendorSchema = new mongoose.Schema(
+import { Schema, model } from "mongoose";
+const vendorSchema = new Schema(
   {
     name: { type: String, required: true, trim: true },
     email: { type: String, required: true, unique: true, lowercase: true },
     phone: { type: String, required: true },
+    destination : { type: String, required: true },
     types: {
       type: [String], // approved services
       enum: ["homestay", "guide", "transport", "handicraft"],
@@ -19,4 +21,4 @@ const vendorSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Vendor", vendorSchema);
+export default model("Vendor", vendorSchema);

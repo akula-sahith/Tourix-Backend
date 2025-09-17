@@ -1,9 +1,9 @@
-import Vendor from "../models/vendorModel.js";
+import Vendor from "../models/Vendor.js";
 
 // 📌 Register Vendor
 export const registerVendor = async (req, res) => {
   try {
-    const { name, email, phone, image } = req.body;
+    const { name, email, phone, destination } = req.body;
 
     const existingVendor = await Vendor.findOne({ email });
     if (existingVendor) {
@@ -14,7 +14,7 @@ export const registerVendor = async (req, res) => {
       name,
       email,
       phone,
-      image,
+      destination,
     });
 
     await newVendor.save();

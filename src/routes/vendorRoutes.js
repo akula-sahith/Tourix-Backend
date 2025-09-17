@@ -1,12 +1,12 @@
-import express from "express";
-import {
+const express = require("express");
+const {
   registerVendor,
   getAllVendors,
   getVendorById,
   getVendorProfile,
   updateVendorProfile,
   requestService,
-} from "../controllers/vendorController.js";
+} = require("../controllers/vendorController.js");
 
 const router = express.Router();
 
@@ -18,4 +18,4 @@ router.get("/profile/:id", getVendorProfile);
 router.patch("/:id", updateVendorProfile);
 router.post("/request-service/:id", requestService);
 
-export default router;
+module.exports = router;   // ✅ now matches CommonJS
