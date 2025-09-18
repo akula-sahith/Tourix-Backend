@@ -4,6 +4,7 @@ const handicraftSchema = new mongoose.Schema(
     productName: { type: String, required: true },
     price: { type: Number, required: true },
     stock: { type: Number, default: 1 },
+    
     image: { type: String }, // single product image
   },
   { timestamps: true }

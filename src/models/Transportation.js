@@ -6,6 +6,7 @@ const transportSchema = new mongoose.Schema(
     transportType: { type: String, required: true }, // Car, Jeep, Bike, etc.
     rentPerHour: { type: Number, required: true },
     availability: { type: Boolean, default: true },
+    verified: { type: Boolean, default: false },
     image: { type: String },
     bookedBy: { type: mongoose.Schema.Types.ObjectId, ref: "Tourist", default: null }, // Tourist who booked
   },

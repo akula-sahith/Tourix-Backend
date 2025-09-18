@@ -5,6 +5,7 @@ const guideSchema = new mongoose.Schema({
   location: { type: String, required: true },
   cost: { type: Number, required: true },
   available: { type: Boolean, default: true },
+  verified: { type: Boolean, default: false },
   assignedTo: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Tourist",

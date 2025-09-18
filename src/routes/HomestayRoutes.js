@@ -1,21 +1,15 @@
-import express from "express";
-import {
-  addHomestay,
-  getAllHomestays,
-  getHomestaysByLocation,
-  updateHomestay,
-  deleteHomestay,
-} from "../controllers/HomestayController.js";
-
+const express = require("express");
 const router = express.Router();
+const homestayController = require("../controllers/homestayController");
+const upload = require("../middlewares/upload");
 
-// Vendor
-router.post("/", addHomestay);
-router.put("/:id", updateHomestay);
-router.delete("/:id", deleteHomestay);
+// 📌 Create homestay with multiple images
+router.post("/create", upload.single("images"), homestayController.createHomestay);
 
-// Tourist
-router.get("/", getAllHomestays);
-router.get("/location/:location", getHomestaysByLocation);
+// Other routes
+router.get("/", homestayController.getHomestays);
+router.get("/:id", homestayController.getHomestayById);
+router.put("/:id", homestayController.updateHomestay);
+router.delete("/:id", homestayController.deleteHomestay);
 
-export default router;
+module.exports = router;

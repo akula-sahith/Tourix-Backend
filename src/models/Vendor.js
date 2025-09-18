@@ -16,7 +16,6 @@ const vendorSchema = new Schema(
       enum: ["homestay", "guide", "transport", "handicraft"],
       default: [],
     },
-    verified: { type: Boolean, default: false },
     image: { type: String }, // profile photo/logo
   },
   { timestamps: true }
