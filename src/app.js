@@ -4,6 +4,7 @@ const connectDB = require("./config/db");
 const cors = require("cors");
 const apiRoutes = require("./routes/apiRoutes");
 const aiRoutes = require("./routes/aiRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 const vendorRoutes = require("./routes/vendorRoutes");
 const touristRoutes = require("./routes/TouristRoute");
 const destRoutes = require("./routes/destinationRoutes");
@@ -23,6 +24,7 @@ app.use("/api", apiRoutes);
 app.use("/ai",aiRoutes);
 app.use("/tourist",touristRoutes);
 app.use("/vendor",vendorRoutes);
+app.use("/admin",adminRoutes);
 app.use("/homestay",homeRoutes);
 app.use("/destination",destRoutes);
 
